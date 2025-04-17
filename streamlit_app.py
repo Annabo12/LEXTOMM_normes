@@ -35,7 +35,7 @@ if "missing_norms" not in st.session_state:
 st.markdown(
     """
     <div style="text-align: center; font-size: 50px; font-weight: bold;">
-        Batterie LEXTOMM
+        Batterie LEXTOMM coucou
     </div>
     """,
     unsafe_allow_html=True
