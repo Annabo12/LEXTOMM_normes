@@ -338,7 +338,7 @@ if st.session_state["scores_entered"]:
     )
 
        # === Tâches sans normes ===
-    st.subheader("🔍 Tâches sans normes disponibles")
+    st.subheader("Tâches sans normes disponibles")
     if st.session_state["missing_norms"]:
         st.warning(", ".join(st.session_state["missing_norms"]))
     else:
@@ -366,7 +366,7 @@ task_labels_and_categories = {
 domain_colors = {
     "Langage": "#6FBF73",  # vert
     "Mémoire": "#64A6FF",  # bleu
-    "Fonctions exécutives": "#B58ED4",  # violet
+    "Fonctions exécutives": "#9361B7",  # violet
     "TOM": "#F8B400",  # orange
     "Autre": "gray"
 }
@@ -424,11 +424,11 @@ def plot_percentile_profile_named(data, task_dict, title="Profil – scores perc
     )
 
 # === Profil structuré – sélection initiale ===
-st.subheader("📈 Profil cognitif – sélection initiale structurée")
-plot_percentile_profile_named(scores_only_df, task_labels_and_categories, title="Profil – scores percentiles (sélection initiale)")
+st.subheader("Profil cognitif global - Scores")
+plot_percentile_profile_named(scores_only_df, task_labels_and_categories, title="Profil – scores percentiles")
 
 # === Profil interactif ===
-st.subheader("🛠️ Profil personnalisé (scores)")
+st.subheader("Profil cognitif détaillé - Scores")
 selected_tasks_custom = st.multiselect(
     label="Sélectionnez les tâches à afficher :",
     options=scores_only_df["Tâche"].unique()
@@ -436,7 +436,7 @@ selected_tasks_custom = st.multiselect(
 
 if selected_tasks_custom:
     dynamic_task_dict = {t: (t, "Autre") for t in selected_tasks_custom}
-    plot_percentile_profile_named(scores_only_df, dynamic_task_dict, title="Profil – scores percentiles (personnalisé)")
+    plot_percentile_profile_named(scores_only_df, dynamic_task_dict, title="Profil – scores percentiles")
 else:
     st.info("Sélectionnez au moins une tâche pour générer un graphique personnalisé.")
 
@@ -458,11 +458,11 @@ time_labels_and_categories = {
 }
 
 # === PROFIL STRUCTURÉ POUR LES TEMPS ===
-st.subheader("📈 Profil – Temps de réaction (sélection initiale structurée)")
-plot_percentile_profile_named(times_only_df, time_labels_and_categories, title="Profil – temps de réaction (sélection initiale)")
+st.subheader("Profil cognitif global – Temps de réaction")
+plot_percentile_profile_named(times_only_df, time_labels_and_categories, title="Profil – temps de réaction")
 
 # === PROFIL INTERACTIF POUR LES TEMPS ===
-st.subheader("🛠️ Profil personnalisé (temps de réaction)")
+st.subheader("Profil cognitif détaillé - Temps de réaction")
 selected_times_custom = st.multiselect(
     label="Sélectionnez les tâches temporelles à afficher :",
     options=times_only_df["Tâche"].unique()
@@ -470,7 +470,7 @@ selected_times_custom = st.multiselect(
 
 if selected_times_custom:
     dynamic_time_task_dict = {t: (t, "Autre") for t in selected_times_custom}
-    plot_percentile_profile_named(times_only_df, dynamic_time_task_dict, title="Profil – temps de réaction (personnalisé)")
+    plot_percentile_profile_named(times_only_df, dynamic_time_task_dict, title="Profil – temps de réaction")
 else:
     st.info("Sélectionnez au moins une tâche pour générer un graphique.")
 
