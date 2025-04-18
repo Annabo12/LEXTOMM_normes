@@ -433,11 +433,11 @@ if st.session_state.get("scores_entered", False):
         options=scores_only_df["Tâche"].unique()
     )
 
-if selected_tasks_custom:
-    dynamic_task_dict = {t: (t, "Autre") for t in selected_tasks_custom}
-    plot_percentile_profile_named(scores_only_df, dynamic_task_dict, title="Profil – scores", key_suffix="score_custom")
-else:
-    st.info("Sélectionnez au moins une tâche pour générer un graphique personnalisé.")
+    if selected_tasks_custom:
+        dynamic_task_dict = {t: (t, "Autre") for t in selected_tasks_custom}
+        plot_percentile_profile_named(scores_only_df, dynamic_task_dict, title="Profil – scores", key_suffix="score_custom")
+    else:
+        st.info("Sélectionnez au moins une tâche pour générer un graphique personnalisé.")
 
 
 # Création des représentations graphiques pour les scores (ACC)
@@ -469,11 +469,11 @@ if st.session_state.get("scores_entered", False):
         options=times_only_df["Tâche"].unique()
     )
 
-if selected_times_custom:
-    dynamic_time_task_dict = {t: (t, "Autre") for t in selected_times_custom}
-    plot_percentile_profile_named(times_only_df, dynamic_time_task_dict, title="Profil – temps de réaction", key_suffix="temps_custom")
-else:
-    st.info("Sélectionnez au moins une tâche pour générer un graphique.")
+    if selected_times_custom:
+        dynamic_time_task_dict = {t: (t, "Autre") for t in selected_times_custom}
+        plot_percentile_profile_named(times_only_df, dynamic_time_task_dict, title="Profil – temps de réaction", key_suffix="temps_custom")
+    else:
+        st.info("Sélectionnez au moins une tâche pour générer un graphique.")
 
 
 # Footer avec citation APA 7
