@@ -375,7 +375,7 @@ domain_colors = {
 import io
 from matplotlib.backends.backend_pdf import PdfPages
 
-def plot_percentile_profile_named(data, task_dict, title="Profil – scores percentiles"):
+def plot_percentile_profile_named(data, task_dict, title="Profil – scores percentiles", key_suffix=""):
     valid_tasks = [t for t in task_dict if t in data["Tâche"].values]
     df = data[data["Tâche"].isin(valid_tasks)].copy()
 
@@ -388,17 +388,13 @@ def plot_percentile_profile_named(data, task_dict, title="Profil – scores perc
 
     fig, ax = plt.subplots(figsize=(8, 6))
 
-    # Zones colorées
     ax.axvspan(0, 5, color="#f8d7da")
     ax.axvspan(5, 15, color="#fff3cd")
     ax.axvspan(15, 85, color="#d4edda")
     ax.axvspan(85, 100, color="#c3e6cb")
     ax.axvline(x=50, linestyle="--", color="black")
-
-    # Tracé de la ligne bleue reliant les points
     ax.plot(df["Percentile (%)"], df["Label"], marker="o", color="dodgerblue")
 
-    # Coloration des labels Y
     y_labels = ax.get_yticklabels()
     for label in y_labels:
         label_text = label.get_text()
@@ -412,7 +408,7 @@ def plot_percentile_profile_named(data, task_dict, title="Profil – scores perc
     ax.set_title(title)
     st.pyplot(fig)
 
-    # Export PDF
+    # Ajout d'un identifiant unique avec suffixe
     pdf_buffer = io.BytesIO()
     with PdfPages(pdf_buffer) as pdf:
         pdf.savefig(fig, bbox_inches='tight')
@@ -420,15 +416,16 @@ def plot_percentile_profile_named(data, task_dict, title="Profil – scores perc
         label="📥 Télécharger le graphique en PDF",
         data=pdf_buffer.getvalue(),
         file_name=f"{title.replace(' ', '_').lower()}.pdf",
-        mime="application/pdf"
+        mime="application/pdf",
+        key=f"download_pdf_{title}_{key_suffix}"
     )
 
 # === Profil structuré – sélection initiale ===
-st.subheader("Profil cognitif global - Scores")
-plot_percentile_profile_named(scores_only_df, task_labels_and_categories, title="Profil – scores percentiles")
+st.subheader("Profil cognitif global - 📊 Scores")
+plot_percentile_profile_named(scores_only_df, task_labels_and_categories, title="Profil – scores", key_suffix="score_initial")
 
 # === Profil interactif ===
-st.subheader("Profil cognitif détaillé - Scores")
+st.subheader("Profil cognitif détaillé - 📊 Scores")
 selected_tasks_custom = st.multiselect(
     label="Sélectionnez les tâches à afficher :",
     options=scores_only_df["Tâche"].unique()
@@ -436,7 +433,7 @@ selected_tasks_custom = st.multiselect(
 
 if selected_tasks_custom:
     dynamic_task_dict = {t: (t, "Autre") for t in selected_tasks_custom}
-    plot_percentile_profile_named(scores_only_df, dynamic_task_dict, title="Profil – scores percentiles")
+    plot_percentile_profile_named(scores_only_df, dynamic_task_dict, title="Profil – scores", key_suffix="score_custom")
 else:
     st.info("Sélectionnez au moins une tâche pour générer un graphique personnalisé.")
 
@@ -458,11 +455,11 @@ time_labels_and_categories = {
 }
 
 # === PROFIL STRUCTURÉ POUR LES TEMPS ===
-st.subheader("Profil cognitif global – Temps de réaction")
-plot_percentile_profile_named(times_only_df, time_labels_and_categories, title="Profil – temps de réaction")
+st.subheader("Profil cognitif global – ⏱️ Temps de réaction")
+plot_percentile_profile_named(times_only_df, time_labels_and_categories, title="Profil – temps de réaction", key_suffix="temps_initial")
 
 # === PROFIL INTERACTIF POUR LES TEMPS ===
-st.subheader("Profil cognitif détaillé - Temps de réaction")
+st.subheader("Profil cognitif détaillé - ⏱️ Temps de réaction")
 selected_times_custom = st.multiselect(
     label="Sélectionnez les tâches temporelles à afficher :",
     options=times_only_df["Tâche"].unique()
@@ -470,7 +467,7 @@ selected_times_custom = st.multiselect(
 
 if selected_times_custom:
     dynamic_time_task_dict = {t: (t, "Autre") for t in selected_times_custom}
-    plot_percentile_profile_named(times_only_df, dynamic_time_task_dict, title="Profil – temps de réaction")
+    plot_percentile_profile_named(times_only_df, dynamic_time_task_dict, title="Profil – temps de réaction", key_suffix="temps_custom")
 else:
     st.info("Sélectionnez au moins une tâche pour générer un graphique.")
 
