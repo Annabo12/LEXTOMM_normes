@@ -420,6 +420,10 @@ def plot_percentile_profile_named(data, task_dict, title="Profil – scores perc
         key=f"download_pdf_{title}_{key_suffix}"
     )
 
+# Initialiser les variables pour éviter les erreurs de déploiement
+selected_tasks_custom = []
+selected_times_custom = []
+
 # === Profil structuré – sélection initiale ===
 if st.session_state.get("scores_entered", False):
     st.subheader("Profil cognitif global - 📊 Scores")
