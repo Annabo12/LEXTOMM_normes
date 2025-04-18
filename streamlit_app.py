@@ -421,15 +421,17 @@ def plot_percentile_profile_named(data, task_dict, title="Profil – scores perc
     )
 
 # === Profil structuré – sélection initiale ===
-st.subheader("Profil cognitif global - 📊 Scores")
-plot_percentile_profile_named(scores_only_df, task_labels_and_categories, title="Profil – scores", key_suffix="score_initial")
+if st.session_state.get("scores_entered", False):
+    st.subheader("Profil cognitif global - 📊 Scores")
+    plot_percentile_profile_named(scores_only_df, task_labels_and_categories, title="Profil – scores", key_suffix="score_initial")
 
 # === Profil interactif ===
-st.subheader("Profil cognitif détaillé - 📊 Scores")
-selected_tasks_custom = st.multiselect(
-    label="Sélectionnez les tâches à afficher :",
-    options=scores_only_df["Tâche"].unique()
-)
+if st.session_state.get("scores_entered", False):    
+    st.subheader("Profil cognitif détaillé - 📊 Scores")
+    selected_tasks_custom = st.multiselect(
+        label="Sélectionnez les tâches à afficher :",
+        options=scores_only_df["Tâche"].unique()
+    )
 
 if selected_tasks_custom:
     dynamic_task_dict = {t: (t, "Autre") for t in selected_tasks_custom}
@@ -455,15 +457,17 @@ time_labels_and_categories = {
 }
 
 # === PROFIL STRUCTURÉ POUR LES TEMPS ===
-st.subheader("Profil cognitif global – ⏱️ Temps de réaction")
-plot_percentile_profile_named(times_only_df, time_labels_and_categories, title="Profil – temps de réaction", key_suffix="temps_initial")
+if st.session_state.get("scores_entered", False):
+    st.subheader("Profil cognitif global – ⏱️ Temps de réaction")
+    plot_percentile_profile_named(times_only_df, time_labels_and_categories, title="Profil – temps de réaction", key_suffix="temps_initial")
 
-# === PROFIL INTERACTIF POUR LES TEMPS ===
-st.subheader("Profil cognitif détaillé - ⏱️ Temps de réaction")
-selected_times_custom = st.multiselect(
-    label="Sélectionnez les tâches temporelles à afficher :",
-    options=times_only_df["Tâche"].unique()
-)
+    # === PROFIL INTERACTIF POUR LES TEMPS ===
+if st.session_state.get("scores_entered", False):
+    st.subheader("Profil cognitif détaillé - ⏱️ Temps de réaction")
+    selected_times_custom = st.multiselect(
+        label="Sélectionnez les tâches temporelles à afficher :",
+        options=times_only_df["Tâche"].unique()
+    )
 
 if selected_times_custom:
     dynamic_time_task_dict = {t: (t, "Autre") for t in selected_times_custom}
